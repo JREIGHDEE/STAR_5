@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF--8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Centered Boxes with Margin Auto</title>
+  <title>Centered Boxes Challenge</title>
   <style>
+    /* A simple body style for better presentation */
+    body {
+      font-family: sans-serif;
+      text-align: center;
+    }
+
     /* 
-      Styles for the first box, as specified in the diagram.
+      Styles for the first box (centered-box1) as specified.
       - height: 200px;
       - width: 200px;
       - margin: auto; (for horizontal centering)
@@ -17,37 +23,37 @@
       width: 200px;
       padding: 0px;
       
-      /* 
-        We add a 50px top/bottom margin to create space between elements.
-        The 'auto' value on the left/right margin is what centers the box.
-      */
+      /* Vertical margin is added to separate the boxes.
+         'auto' on left/right handles the centering. */
       margin: 50px auto;
 
       /* Helper styles to match the visual look */
-      background-color: #cce7f5; /* Light blue background */
+      background-color: #b3e0f2; /* Light blue background */
       display: flex;
       align-items: center;
       justify-content: center;
+      border: 1px solid #ccc;
     }
 
     /* 
-      Styles for the second box, as specified in the diagram.
+      Styles for the second box (centered-box2) as specified.
       - height: 400px;
       - width: 200px;
       - margin: auto; (for horizontal centering)
-      - padding: 40px;
+      - padding: 10px; (based on the detailed image)
     */
     .centered-box2 {
       height: 400px;
       width: 200px;
-      padding: 40px;
-      margin: 50px auto; /* Same margin for consistency */
+      padding: 10px;
+      margin: 50px auto;
 
       /* Helper styles to match the visual look */
-      background-color: #cce7f5; /* Light blue background */
+      background-color: #b3e0f2; /* Light blue background */
       display: flex;
       align-items: center;
       justify-content: center;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
