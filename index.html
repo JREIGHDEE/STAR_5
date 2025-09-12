@@ -1,84 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Centered Boxes with Margin Auto</title>
+  <title>Centered Boxes Challenge</title>
   <style>
-    /* Basic styles for the page for better presentation */
-    body {
-      font-family: sans-serif;
-    }
-
     /* 
-      Styles for the first box (centered-box1) as specified.
-      - height: 200px;
-      - width: 200px;
-      - margin: auto;
-      - padding: 0px;
+      Styles for the first box, matching the diagram exactly.
+      - height: 200px
+      - width: 200px
+      - padding: 0px
+      - margin: auto (horizontally)
     */
     .centered-box1 {
       height: 200px;
       width: 200px;
       padding: 0px;
-      
-      /* Adding a 50px top/bottom margin to create space.
-         The 'auto' value for left/right handles the centering. */
-      margin: 50px auto;
+      margin: 50px auto; /* 50px top/bottom, auto left/right */
+      background-color: #b3e0f2; /* The blue content color */
 
-      /* Helper styles to match the visual look */
-      background-color: #b3e0f2; /* Light blue background */
-      border: 25px solid #f5dcb3; /* Orange border to represent margin area */
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      /* Simple method to center the text */
       text-align: center;
+      line-height: 200px;
     }
 
     /* 
-      Styles for the second box (centered-box2) as specified.
-      - height: 400px;
-      - width: 200px;
-      - margin: auto;
-      - padding: 40px;
+      Styles for the second box, matching the diagram exactly.
+      - height: 400px
+      - width: 200px
+      - padding: 40px
+      - margin: auto (horizontally)
     */
     .centered-box2 {
-      /* Box Sizing is set to content-box by default.
-         Height (400px) and Width (200px) apply to the content area. */
       height: 400px;
       width: 200px;
-      
-      /* Padding adds space inside the border. */
       padding: 40px;
-      
-      /* Margin is applied the same way as the first box. */
-      margin: 50px auto;
+      margin: 50px auto; /* 50px top/bottom, auto left/right */
+      background-color: #b3e0f2; /* The blue content color */
 
-      /* Helper styles to match the visual look */
-      background-color: #b3e0f2; /* Light blue content area */
-      border: 25px solid #f5dcb3; /* Orange border to represent margin area */
-      
-      /* This green background helps visualize the padding area */
-      background-clip: content-box; 
-      border-radius: 5px; /* Slight rounding on corners */
-      background-image: linear-gradient(#d3f5b3, #d3f5b3); /* Green color for padding */
-      background-repeat: no-repeat;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      /* Simple method to center the text */
       text-align: center;
+      line-height: 400px;
+
+      /* This tells the browser the height/width should NOT include the padding */
+      box-sizing: content-box;
     }
   </style>
 </head>
 <body>
 
-  <!-- Division tag for the first box -->
   <div class="centered-box1">
     This box is centered.
   </div>
 
-  <!-- Division tag for the second box -->
   <div class="centered-box2">
     This box is centered.
   </div>
