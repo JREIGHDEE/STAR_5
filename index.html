@@ -3,19 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Centered Boxes Challenge</title>
+  <title>Centered Boxes with Margin Auto</title>
   <style>
-    /* A simple body style for better presentation */
+    /* Basic styles for the page for better presentation */
     body {
       font-family: sans-serif;
-      text-align: center;
     }
 
     /* 
       Styles for the first box (centered-box1) as specified.
       - height: 200px;
       - width: 200px;
-      - margin: auto; (for horizontal centering)
+      - margin: auto;
       - padding: 0px;
     */
     .centered-box1 {
@@ -23,37 +22,52 @@
       width: 200px;
       padding: 0px;
       
-      /* Vertical margin is added to separate the boxes.
-         'auto' on left/right handles the centering. */
+      /* Adding a 50px top/bottom margin to create space.
+         The 'auto' value for left/right handles the centering. */
       margin: 50px auto;
 
       /* Helper styles to match the visual look */
       background-color: #b3e0f2; /* Light blue background */
+      border: 25px solid #f5dcb3; /* Orange border to represent margin area */
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid #ccc;
+      text-align: center;
     }
 
     /* 
       Styles for the second box (centered-box2) as specified.
       - height: 400px;
       - width: 200px;
-      - margin: auto; (for horizontal centering)
-      - padding: 10px; (based on the detailed image)
+      - margin: auto;
+      - padding: 40px;
     */
     .centered-box2 {
+      /* Box Sizing is set to content-box by default.
+         Height (400px) and Width (200px) apply to the content area. */
       height: 400px;
       width: 200px;
-      padding: 10px;
+      
+      /* Padding adds space inside the border. */
+      padding: 40px;
+      
+      /* Margin is applied the same way as the first box. */
       margin: 50px auto;
 
       /* Helper styles to match the visual look */
-      background-color: #b3e0f2; /* Light blue background */
+      background-color: #b3e0f2; /* Light blue content area */
+      border: 25px solid #f5dcb3; /* Orange border to represent margin area */
+      
+      /* This green background helps visualize the padding area */
+      background-clip: content-box; 
+      border-radius: 5px; /* Slight rounding on corners */
+      background-image: linear-gradient(#d3f5b3, #d3f5b3); /* Green color for padding */
+      background-repeat: no-repeat;
+
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid #ccc;
+      text-align: center;
     }
   </style>
 </head>
