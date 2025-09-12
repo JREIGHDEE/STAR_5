@@ -1,47 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF--8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Complex CSS Box Model Challenge</title>
+  <title>Centered Boxes with Margin Auto</title>
   <style>
-    body {
-      margin: 20px auto;
-      width: 600px;
-      text-align: center;
+    /* 
+      Styles for the first box, as specified in the diagram.
+      - height: 200px;
+      - width: 200px;
+      - margin: auto; (for horizontal centering)
+      - padding: 0px;
+    */
+    .centered-box1 {
+      height: 200px;
+      width: 200px;
+      padding: 0px;
+      
+      /* 
+        We add a 50px top/bottom margin to create space between elements.
+        The 'auto' value on the left/right margin is what centers the box.
+      */
+      margin: 50px auto;
+
+      /* Helper styles to match the visual look */
+      background-color: #cce7f5; /* Light blue background */
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .header {
-      height: 60px;
-      margin: 0px;
-    }
-    .nav {
-      height: 40px;
-    }
-    .content {
-      margin: 10px;
-      padding: 20px;
-    }
-    .footer {
-      height: 40px;
+
+    /* 
+      Styles for the second box, as specified in the diagram.
+      - height: 400px;
+      - width: 200px;
+      - margin: auto; (for horizontal centering)
+      - padding: 40px;
+    */
+    .centered-box2 {
+      height: 400px;
+      width: 200px;
+      padding: 40px;
+      margin: 50px auto; /* Same margin for consistency */
+
+      /* Helper styles to match the visual look */
+      background-color: #cce7f5; /* Light blue background */
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    This is the Header
+  <!-- Division tag for the first box -->
+  <div class="centered-box1">
+    This box is centered.
   </div>
 
-  <div class="nav">
-    This is the Navigation
+  <!-- Division tag for the second box -->
+  <div class="centered-box2">
+    This box is centered.
   </div>
 
-  <div class="content">
-    This is the Main Content
-  </div>
-
-  <div class="footer">
-    This is the Footer
-  </div>
 </body>
 </html>
