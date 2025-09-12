@@ -15,25 +15,27 @@
       margin: 0;
       width: 600px;
       text-align: center;
-      /* Added auto margin to center the whole page in the browser */
+      
+      /* These two lines are for presentation: they center the 
+         600px container on the page and draw its outer box */
       margin: 20px auto; 
-      border: 1px solid #eee; /* Added border to match the container */
+      border: 1px solid #eee;
     }
 
     /* Styles for the Header <div> */
     .header {
       height: 60px;
-      line-height: 60px; /* Helper to vertically center text */
+      line-height: 60px; /* Vertically centers the text */
     }
 
     /* Styles for the Navigation <div> */
     .nav {
       height: 40px;
-      line-height: 40px; /* Helper to vertically center text */
+      line-height: 40px; /* Vertically centers the text */
     }
 
     /* 
-      New styles for the main container <div>.
+      Styles for the main container <div>.
       - display: flex (to place children side-by-side)
       - height: 300px
     */
@@ -41,54 +43,24 @@
       display: flex;
       height: 300px;
       
-      /* Helpers to center the section boxes inside */
+      /* Aligns the section items horizontally and vertically */
       justify-content: center;
       align-items: center;
     }
 
     /* 
-      New styles for the nested Section <div> tags.
+      Styles for the nested Section <div> tags.
       - padding: 10px
       - width: 300px
+      - NO colors or borders are applied.
     */
     .section1, .section2 {
       padding: 10px;
       width: 300px;
-      background-color: #e0f7fa; /* Added background to match diagram */
-      border: 1px solid #b2ebf2; /* Added border to match diagram */
-      margin: 0 10px; /* Added margin to create space between sections */
+      margin: 0 10px; /* Provides spacing between the two sections */
     }
 
     /* Styles for the Footer <div> */
     .footer {
       height: 40px;
-      line-height: 40px; /* Helper to vertically center text */
-    }
-  </style>
-</head>
-<body>
-
-  <div class="header">
-    This is the Header
-  </div>
-
-  <div class="nav">
-    This is the Navigation
-  </div>
-
-  <!-- This is the updated main content section -->
-  <div class="main">
-    <div class="section1">
-      Section 1
-    </div>
-    <div class="section2">
-      Section 2
-    </div>
-  </div>
-
-  <div class="footer">
-    This is the Footer
-  </div>
-
-</body>
-</html>
+      line-height: 40px; /* Vertically centers the text 
