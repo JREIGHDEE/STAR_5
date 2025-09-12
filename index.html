@@ -1,53 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Centered Boxes</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flexbox Layout Challenge</title>
   <style>
     /* 
-      Styles for the first box.
-      - height/width: 200px
-      - padding: 0px
-      - margin: auto (for horizontal centering)
+      Styles for the <body> tag as specified.
+      - margin: 0
+      - text-align: center
+      - width: 600px
     */
-    .centered-box1 {
-      height: 200px;
-      width: 200px;
-      margin: 50px auto;
-      background-color: #b3e0f2; /* Light blue color */
-
-      /* A simple way to center the text inside */
+    body {
+      margin: 0;
+      width: 600px;
       text-align: center;
-      line-height: 200px;
+      /* Added auto margin to center the whole page in the browser */
+      margin: 20px auto; 
+      border: 1px solid #eee; /* Added border to match the container */
+    }
+
+    /* Styles for the Header <div> */
+    .header {
+      height: 60px;
+      line-height: 60px; /* Helper to vertically center text */
+    }
+
+    /* Styles for the Navigation <div> */
+    .nav {
+      height: 40px;
+      line-height: 40px; /* Helper to vertically center text */
     }
 
     /* 
-      Styles for the second box.
-      - height: 400px
-      - width: 200px
-      - padding: 40px
-      - margin: auto (for horizontal centering)
+      New styles for the main container <div>.
+      - display: flex (to place children side-by-side)
+      - height: 300px
     */
-    .centered-box2 {
-      height: 400px;
-      width: 200px;
-      padding: 40px;
-      margin: 50px auto;
-      background-color: #b3e0f2; /* Light blue color */
+    .main {
+      display: flex;
+      height: 300px;
       
-      /* A simple way to center the text inside */
-      text-align: center;
-      line-height: 400px;
+      /* Helpers to center the section boxes inside */
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* 
+      New styles for the nested Section <div> tags.
+      - padding: 10px
+      - width: 300px
+    */
+    .section1, .section2 {
+      padding: 10px;
+      width: 300px;
+      background-color: #e0f7fa; /* Added background to match diagram */
+      border: 1px solid #b2ebf2; /* Added border to match diagram */
+      margin: 0 10px; /* Added margin to create space between sections */
+    }
+
+    /* Styles for the Footer <div> */
+    .footer {
+      height: 40px;
+      line-height: 40px; /* Helper to vertically center text */
     }
   </style>
 </head>
 <body>
 
-  <div class="centered-box1">
-    This box is centered.
+  <div class="header">
+    This is the Header
   </div>
 
-  <div class="centered-box2">
-    This box is centered.
+  <div class="nav">
+    This is the Navigation
+  </div>
+
+  <!-- This is the updated main content section -->
+  <div class="main">
+    <div class="section1">
+      Section 1
+    </div>
+    <div class="section2">
+      Section 2
+    </div>
+  </div>
+
+  <div class="footer">
+    This is the Footer
   </div>
 
 </body>
