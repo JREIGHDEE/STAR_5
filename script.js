@@ -1,122 +1,81 @@
 document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     const loader = document.querySelector('.loader');
-
-    // --- Hide loader and enable scroll (Corrected Logic) ---
-    window.addEventListener('load', () => {
-        // The fadeInOut animation for the text lasts 3 seconds.
-        // We wait for that animation to complete before starting to hide the loader.
-        setTimeout(() => {
-            loader.classList.add('hidden'); // Add class to trigger fade-out
-            body.style.overflow = 'auto'; // Allow scrolling now
-        }, 3000); // This MUST match the duration of the .loader-text animation
-    });
-
-    // --- Animated Particle Background ---
-    const canvas = document.getElementById('particle-canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    let particlesArray;
-
-    class Particle {
-        constructor(x, y, directionX, directionY, size, color) {
-            this.x = x;
-            this.y = y;
-            this.directionX = directionX;
-            this.directionY = directionY;
-            this.size = size;
-            this.color = color;
-        }
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-            ctx.fillStyle = 'rgba(218, 184, 139, 0.5)';
-            ctx.fill();
-        }
-        update() {
-            if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
-            if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
-            this.x += this.directionX;
-            this.y += this.directionY;
-            this.draw();
-        }
-    }
-
-    function initParticles() {
-        particlesArray = [];
-        let numberOfParticles = (canvas.height * canvas.width) / 9000;
-        for (let i = 0; i < numberOfParticles; i++) {
-            let size = Math.random() * 2 + 1;
-            let x = Math.random() * (innerWidth - size * 2) + size;
-            let y = Math.random() * (innerHeight - size * 2) + size;
-            let directionX = (Math.random() * 0.4) - 0.2;
-            let directionY = (Math.random() * 0.4) - 0.2;
-            particlesArray.push(new Particle(x, y, directionX, directionY, size));
-        }
-    }
-
-    function animateParticles() {
-        requestAnimationFrame(animateParticles);
-        ctx.clearRect(0, 0, innerWidth, innerHeight);
-        for (let i = 0; i < particlesArray.length; i++) {
-            particlesArray[i].update();
-        }
-    }
-    
-    initParticles();
-    animateParticles();
-
-    window.addEventListener('resize', () => {
-        canvas.width = innerWidth;
-        canvas.height = innerHeight;
-        initParticles();
-    });
-
-    // --- Entry Viewer Logic ---
     const gridItems = document.querySelectorAll('.grid-item');
     const backBtn = document.querySelector('.back-btn');
 
+    // --- Page Load Animation ---
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            loader.style.opacity = '0';
+            loader.style.visibility = 'hidden';
+            body.style.overflow = 'auto';
+        }, 3000); // Must match the animation duration in CSS
+    });
+
+    // --- Grid Item Click Logic ---
     gridItems.forEach(item => {
         item.addEventListener('click', () => {
             const entryId = item.getAttribute('data-entry');
             const entryToShow = document.getElementById(entryId);
 
-            document.querySelectorAll('.entry-content').forEach(c => c.style.display = 'none');
+            // Hide all entries first
+            document.querySelectorAll('.entry-content').forEach(content => {
+                content.classList.remove('active');
+                content.style.display = 'none';
+            });
+            
+            // Show the selected entry
             entryToShow.style.display = 'block';
             
+            // Activate the page-turn animation and staggered content reveal
             body.classList.add('entry-active');
             
-            // Trigger scroll animations for the now-visible content
-            setupScrollAnimations(entryToShow);
-            
-            // Reset scroll to top
+            // Use a timeout to apply the 'active' class after display is set
+            setTimeout(() => {
+                entryToShow.classList.add('active');
+                
+                // Stagger animations for child elements
+                const elementsToAnimate = entryToShow.querySelectorAll('.entry-wrapper > *');
+                elementsToAnimate.forEach((el, index) => {
+                    // This delay is added to the base delay in the CSS
+                    el.style.transitionDelay = `${0.5 + index * 0.1}s`;
+                });
+            }, 50);
+
+            // Scroll to the top of the entry
             entryToShow.scrollTop = 0;
         });
     });
 
-    backBtn.addEventListener('click', () => {
+    // --- Back Button Logic ---
+    const closeEntry = () => {
         body.classList.remove('entry-active');
+
+        // Get the currently active entry to hide it after the animation
+        const activeEntry = document.querySelector('.entry-content.active');
+        
+        // Wait for the closing animation to finish
+        setTimeout(() => {
+            if (activeEntry) {
+                activeEntry.classList.remove('active');
+                activeEntry.style.display = 'none';
+                
+                // Reset transition delays
+                const animatedElements = activeEntry.querySelectorAll('.entry-wrapper > *');
+                animatedElements.forEach(el => {
+                    el.style.transitionDelay = '';
+                });
+            }
+        }, 800); // Matches the .entry-viewer::before transition duration
+    };
+
+    backBtn.addEventListener('click', closeEntry);
+
+    // Optional: Allow closing with the 'Escape' key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && body.classList.contains('entry-active')) {
+            closeEntry();
+        }
     });
-
-    // --- Intersection Observer for Scroll Animations ---
-    function setupScrollAnimations(container) {
-        const animatedElements = container.querySelectorAll('[data-animate]');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
-                if (entry.isIntersecting) {
-                    // Add a staggered delay for a nicer effect
-                    entry.target.style.transitionDelay = `${index * 100}ms`;
-                    entry.target.classList.add('visible');
-                    // observer.unobserve(entry.target); // Optional: stop observing after animation
-                }
-            });
-        }, {
-            threshold: 0.1, // Trigger when 10% of the element is visible
-            root: container // IMPORTANT: Observe within the scrolling container
-        });
-
-        animatedElements.forEach(el => observer.observe(el));
-    }
 });
