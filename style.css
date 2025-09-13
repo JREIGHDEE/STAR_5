@@ -31,7 +31,7 @@ body {
     z-index: -1;
 }
 
-/* --- Loader --- */
+/* --- Loader (Corrected) --- */
 .loader {
     position: fixed;
     top: 0;
@@ -43,8 +43,12 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 100;
-    transition: opacity 1s ease-in-out 1.5s, visibility 1s linear 1.5s;
-    transition-delay: 2s;
+    transition: opacity 1s ease-in-out; /* Simpler transition */
+}
+
+.loader.hidden {
+    opacity: 0;
+    pointer-events: none; /* Prevents interaction when hidden */
 }
 
 .loader-text {
@@ -64,7 +68,7 @@ body {
 .main-content {
     padding: 8vh 5vw;
     opacity: 0;
-    animation: fadeInContent 1s forwards 2.5s;
+    animation: fadeInContent 1s forwards 3s; /* Delay matches loader time */
 }
 
 @keyframes fadeInContent {
@@ -139,12 +143,13 @@ body {
     opacity: 0;
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    transition: opacity 0.5s ease, visibility 0.5s ease;
+    transition: opacity 0.5s ease, visibility 0s linear 0.5s;
 }
 
 body.entry-active .entry-viewer {
     visibility: visible;
     opacity: 1;
+    transition: opacity 0.5s ease, visibility 0s;
 }
 
 .back-btn {
