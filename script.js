@@ -2,13 +2,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     const loader = document.querySelector('.loader');
 
-    // --- Hide loader and enable scroll ---
+    // --- Hide loader and enable scroll (Corrected Logic) ---
     window.addEventListener('load', () => {
+        // The fadeInOut animation for the text lasts 3 seconds.
+        // We wait for that animation to complete before starting to hide the loader.
         setTimeout(() => {
-            loader.style.opacity = '0';
-            loader.style.visibility = 'hidden';
-            body.style.overflow = 'auto';
-        }, 2500); // Sync with CSS animation
+            loader.classList.add('hidden'); // Add class to trigger fade-out
+            body.style.overflow = 'auto'; // Allow scrolling now
+        }, 3000); // This MUST match the duration of the .loader-text animation
     });
 
     // --- Animated Particle Background ---
