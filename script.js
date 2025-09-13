@@ -5,20 +5,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const backBtn = document.querySelector('.back-btn');
     let activeEntry = null;
 
-    // --- Fireworks Background Logic ---
-    const fireworksContainer = document.querySelector('.fireworks-background');
-    const numFireworks = 25; // How many fireworks to display
+    // --- Celestial Background Logic ---
+    const starsContainer = document.getElementById('stars-container');
+    const numStars = 100; // More stars for a fuller sky
 
-    for (let i = 0; i < numFireworks; i++) {
-        const firework = document.createElement('div');
-        firework.className = 'firework';
-        fireworksContainer.appendChild(firework);
+    for (let i = 0; i < numStars; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        starsContainer.appendChild(star);
 
-        // Randomize position and animation delay for a natural look
-        firework.style.left = `${Math.random() * 100}vw`;
-        firework.style.top = `${Math.random() * 100}vh`;
-        firework.style.animationDelay = `${Math.random() * 3}s`;
-        firework.style.animationDuration = `${1 + Math.random() * 2}s`;
+        const size = Math.random() * 3 + 1; // Stars of different sizes
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.left = `${Math.random() * 100}vw`;
+        star.style.top = `${Math.random() * 100}vh`;
+        star.style.animationDelay = `${Math.random() * 5}s`;
+        star.style.animationDuration = `${3 + Math.random() * 4}s`;
     }
 
     // --- Page Load Animation ---
@@ -27,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loader.style.opacity = '0';
             loader.style.visibility = 'hidden';
             body.style.overflow = 'auto';
-        }, 3500); // Matches the loader text animation duration
+        }, 4000); // Matches the loader text animation duration
     });
 
     // --- Function to open an entry ---
@@ -41,10 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const elementsToAnimate = entryElement.querySelectorAll('.entry-wrapper > *');
         elementsToAnimate.forEach((el, index) => {
             setTimeout(() => {
-                el.style.transitionDelay = `${index * 0.1}s`;
+                el.style.transitionDelay = `${index * 0.15}s`; // Slightly slower stagger
                 el.style.opacity = '1';
                 el.style.transform = 'translateY(0)';
-            }, 800); // Delay matches the main transition speed
+            }, 1200); // Delay matches the main transition speed
         });
         
         entryElement.scrollTop = 0;
@@ -66,11 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 elementsToAnimate.forEach(el => {
                     el.style.transitionDelay = '';
                     el.style.opacity = '0';
-                    el.style.transform = 'translateY(25px)';
+                    el.style.transform = 'translateY(30px)';
                 });
                 activeEntry = null;
-            }, 800);
-        }, 400);
+            }, 1200); // Matches the CSS transition speed
+        }, 500); // Wait for the content to fade out
     };
 
     // --- Event Listeners ---
