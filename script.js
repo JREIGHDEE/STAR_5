@@ -3,16 +3,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const loader = document.querySelector('.loader');
     const gridItems = document.querySelectorAll('.grid-item');
     const backBtn = document.querySelector('.back-btn');
-    let activeEntry = null; // Keep track of the currently open entry
+    let activeEntry = null;
+
+    // --- Fireworks Background Logic ---
+    const fireworksContainer = document.querySelector('.fireworks-background');
+    const numFireworks = 25; // How many fireworks to display
+
+    for (let i = 0; i < numFireworks; i++) {
+        const firework = document.createElement('div');
+        firework.className = 'firework';
+        fireworksContainer.appendChild(firework);
+
+        // Randomize position and animation delay for a natural look
+        firework.style.left = `${Math.random() * 100}vw`;
+        firework.style.top = `${Math.random() * 100}vh`;
+        firework.style.animationDelay = `${Math.random() * 3}s`;
+        firework.style.animationDuration = `${1 + Math.random() * 2}s`;
+    }
 
     // --- Page Load Animation ---
     window.addEventListener('load', () => {
-        // This timer matches the 3s duration of the loader text animation
         setTimeout(() => {
             loader.style.opacity = '0';
             loader.style.visibility = 'hidden';
             body.style.overflow = 'auto';
-        }, 3000); 
+        }, 3500); // Matches the loader text animation duration
     });
 
     // --- Function to open an entry ---
@@ -21,14 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         entryElement.style.display = 'block';
         activeEntry = entryElement;
-
-        // Activate the circle expansion animation
         body.classList.add('entry-active');
         
-        // Stagger the animation of the content inside
         const elementsToAnimate = entryElement.querySelectorAll('.entry-wrapper > *');
         elementsToAnimate.forEach((el, index) => {
-            // Use a timeout to ensure styles apply after the main transition starts
             setTimeout(() => {
                 el.style.transitionDelay = `${index * 0.1}s`;
                 el.style.opacity = '1';
@@ -39,43 +50,33 @@ document.addEventListener('DOMContentLoaded', () => {
         entryElement.scrollTop = 0;
     };
 
-    // --- Function to close an entry (BUG FIX IMPLEMENTED HERE) ---
+    // --- Function to close an entry (BUG FIX IMPLEMENTED) ---
     const closeEntry = () => {
         if (!activeEntry) return;
 
         const entryWrapper = activeEntry.querySelector('.entry-wrapper');
-        
-        // 1. Start by fading out the content inside the viewer
         entryWrapper.classList.add('is-hiding');
         
-        // 2. After the content is hidden, trigger the circle retraction animation
         setTimeout(() => {
             body.classList.remove('entry-active');
-
-            // 3. After the main closing animation finishes, clean up everything
             setTimeout(() => {
                 entryWrapper.classList.remove('is-hiding');
                 activeEntry.style.display = 'none';
-
-                // Reset styles for the next time it opens
                 const elementsToAnimate = activeEntry.querySelectorAll('.entry-wrapper > *');
                 elementsToAnimate.forEach(el => {
                     el.style.transitionDelay = '';
                     el.style.opacity = '0';
                     el.style.transform = 'translateY(25px)';
                 });
-                
-                activeEntry = null; // Clear the active entry
-            }, 800); // This must match the CSS --transition-speed
-
-        }, 400); // Wait for the content to fade out (matches .entry-wrapper transition)
+                activeEntry = null;
+            }, 800);
+        }, 400);
     };
 
     // --- Event Listeners ---
     gridItems.forEach(item => {
         item.addEventListener('click', () => {
             if (body.classList.contains('entry-active')) return;
-            
             const entryId = item.getAttribute('data-entry');
             const entryToShow = document.getElementById(entryId);
             openEntry(entryToShow);
