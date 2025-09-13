@@ -18,7 +18,8 @@ body {
     font-family: var(--font-body);
     background-color: var(--bg-color);
     color: var(--text-color);
-    overflow: hidden; /* Prevent scrolling during animations */
+    /* Start with overflow hidden, JS will change it */
+    overflow: hidden; 
 }
 
 /* --- Animated Background --- */
@@ -38,7 +39,6 @@ body {
     to { transform: translateY(-100vh); }
 }
 
-/* Using pseudo-elements for particles to avoid extra HTML */
 #particle-background::after {
     content: '';
     position: absolute;
@@ -48,7 +48,6 @@ body {
     border-radius: 50%;
     top: 100vh;
     box-shadow: 
-        /* ... (More particles) ... */
         5vw 10vh 1px var(--primary-color), 10vw 80vh 1px var(--primary-color),
         15vw 30vh 0px var(--primary-color), 20vw 90vh 1px var(--primary-color),
         25vw 50vh 1px var(--primary-color), 30vw 10vh 0px var(--primary-color),
@@ -75,7 +74,9 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 100;
-    transition: opacity 0.8s ease-in-out, visibility 0.8s;
+    /* --- THIS IS THE FIX --- */
+    /* We now transition opacity for 0.8s, and then after a 0.8s delay, instantly switch visibility */
+    transition: opacity 0.8s ease-in-out, visibility 0s linear 0.8s;
 }
 
 .loader-text {
@@ -95,11 +96,13 @@ body {
 .main-content {
     padding: 5vh 5vw;
     opacity: 0;
-    animation: fadeInContent 1s forwards 2.5s;
+    /* Animation starts after the loader text has finished its cycle */
+    animation: fadeInContent 1s forwards 3s;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center; /* Ensures horizontal centering for the container itself */
 }
 
 @keyframes fadeInContent {
@@ -124,11 +127,13 @@ body {
 }
 
 .grid-container {
-    display: flex;
+    display: flex; /* This allows wrapping and centering */
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: center; /* This is the key to centering the boxes */
     gap: 30px;
     perspective: 1200px;
+    width: 100%;
+    max-width: 1100px; /* Prevents the grid from becoming too wide on large screens */
 }
 
 .grid-item {
@@ -262,7 +267,7 @@ body.entry-active .back-btn {
     line-height: 1.9;
     margin-bottom: 1.8rem;
     text-align: justify;
-    text-align-last: center; /* Center the last line of justified text */
+    text-align-last: center; 
 }
 
 .entry-content em {
