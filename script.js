@@ -2,39 +2,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     const loader = document.querySelector('.loader');
     const gridItems = document.querySelectorAll('.grid-item');
-    const entryViewer = document.querySelector('.entry-viewer');
     const backBtn = document.querySelector('.back-btn');
     let activeEntry = null; // Keep track of the currently open entry
 
     // --- Page Load Animation ---
     window.addEventListener('load', () => {
+        // This timer matches the 3s duration of the loader text animation
         setTimeout(() => {
             loader.style.opacity = '0';
             loader.style.visibility = 'hidden';
             body.style.overflow = 'auto';
-        }, 2000); // Duration before loader fades out
+        }, 3000); 
     });
 
     // --- Function to open an entry ---
     const openEntry = (entryElement) => {
         if (!entryElement) return;
 
-        // Make the entry visible and set it as active
         entryElement.style.display = 'block';
         activeEntry = entryElement;
 
-        // Activate the "wooden doors" opening animation
+        // Activate the circle expansion animation
         body.classList.add('entry-active');
         
         // Stagger the animation of the content inside
         const elementsToAnimate = entryElement.querySelectorAll('.entry-wrapper > *');
         elementsToAnimate.forEach((el, index) => {
-            el.style.transitionDelay = `${0.5 + index * 0.1}s`;
-            el.style.opacity = '1';
-            el.style.transform = 'translateY(0)';
+            // Use a timeout to ensure styles apply after the main transition starts
+            setTimeout(() => {
+                el.style.transitionDelay = `${index * 0.1}s`;
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            }, 800); // Delay matches the main transition speed
         });
         
-        // Scroll to the top of the entry for a clean start
         entryElement.scrollTop = 0;
     };
 
@@ -43,12 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!activeEntry) return;
 
         const entryWrapper = activeEntry.querySelector('.entry-wrapper');
-        const elementsToAnimate = activeEntry.querySelectorAll('.entry-wrapper > *');
         
         // 1. Start by fading out the content inside the viewer
         entryWrapper.classList.add('is-hiding');
         
-        // 2. After the content is hidden, trigger the "wooden doors" closing animation
+        // 2. After the content is hidden, trigger the circle retraction animation
         setTimeout(() => {
             body.classList.remove('entry-active');
 
@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 activeEntry.style.display = 'none';
 
                 // Reset styles for the next time it opens
+                const elementsToAnimate = activeEntry.querySelectorAll('.entry-wrapper > *');
                 elementsToAnimate.forEach(el => {
                     el.style.transitionDelay = '';
                     el.style.opacity = '0';
@@ -73,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Event Listeners ---
     gridItems.forEach(item => {
         item.addEventListener('click', () => {
-            // Prevent opening another while one is already active
             if (body.classList.contains('entry-active')) return;
             
             const entryId = item.getAttribute('data-entry');
