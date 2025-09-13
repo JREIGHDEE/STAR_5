@@ -26,18 +26,7 @@ body {
     overflow: hidden; 
 }
 
-/* --- Background and Loader --- */
-.background-texture {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
-    opacity: 0.05;
-    z-index: -1;
-}
-
+/* --- Loader with Text --- */
 .loader {
     position: fixed;
     top: 0;
@@ -48,27 +37,28 @@ body {
     display: grid;
     place-items: center;
     z-index: 100;
-    transition: opacity 0.5s ease-out 1.5s, visibility 0s linear 2s;
+    transition: opacity 0.8s ease-in-out, visibility 0s linear 0.8s;
 }
 
-@keyframes pulse {
-    0%, 100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(229, 160, 79, 0.7); }
-    50% { transform: scale(1); box-shadow: 0 0 20px 10px rgba(229, 160, 79, 0); }
+.loader-text {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-style: italic;
+    color: var(--text-color);
+    opacity: 0;
+    animation: fadeInOut 3s forwards;
 }
 
-.loader-icon {
-    width: 20px;
-    height: 20px;
-    background-color: var(--accent-color);
-    border-radius: 50%;
-    animation: pulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    20%, 80% { opacity: 1; }
 }
 
 /* --- Main Content & Grid --- */
 .main-content {
     padding: 5vh 5vw;
     opacity: 0;
-    animation: fadeInContent 1s forwards 2s;
+    animation: fadeInContent 1s forwards 3s; /* Delay matches loader animation */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -159,10 +149,10 @@ body {
     color: var(--text-color);
     font-weight: 400;
     transition: transform 0.5s ease;
-    transform: translateZ(50px); /* Give text 3D depth */
+    transform: translateZ(50px);
 }
 
-/* --- Entry Viewer ("Wooden Doors") --- */
+/* --- Entry Viewer (Circle Transition) --- */
 .entry-viewer {
     position: fixed;
     top: 0;
@@ -171,26 +161,17 @@ body {
     height: 100%;
     z-index: 200;
     visibility: hidden;
+    background-color: var(--card-bg-color);
+    clip-path: circle(0% at 50% 50%);
+    transition: clip-path var(--transition-speed) cubic-bezier(0.86, 0, 0.07, 1), visibility 0s linear var(--transition-speed);
+    will-change: clip-path;
 }
 
-.entry-viewer::before, .entry-viewer::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    background-color: var(--bg-color);
-    background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
-    transition: transform var(--transition-speed) cubic-bezier(0.86, 0, 0.07, 1);
-    z-index: 210;
+body.entry-active .entry-viewer {
+    visibility: visible;
+    clip-path: circle(150% at 50% 50%);
+    transition-delay: 0s;
 }
-
-.entry-viewer::before { left: 0; }
-.entry-viewer::after { right: 0; }
-
-body.entry-active .entry-viewer { visibility: visible; }
-body.entry-active .entry-viewer::before { transform: translateX(-100%); }
-body.entry-active .entry-viewer::after { transform: translateX(100%); }
 
 /* --- Back Button --- */
 .back-btn {
@@ -210,8 +191,13 @@ body.entry-active .entry-viewer::after { transform: translateX(100%); }
     z-index: 220;
 }
 
-body.entry-active .back-btn { opacity: 0.7; transform: rotate(0deg); }
-.back-btn:hover { opacity: 1; }
+body.entry-active .back-btn {
+    opacity: 0.7;
+    transform: rotate(0deg);
+}
+.back-btn:hover {
+    opacity: 1;
+}
 
 /* --- Entry Content --- */
 .entry-content {
@@ -222,7 +208,6 @@ body.entry-active .back-btn { opacity: 0.7; transform: rotate(0deg); }
     width: 100%;
     height: 100%;
     overflow-y: auto;
-    background-color: var(--card-bg-color);
     padding: 10vh 8vw;
     text-align: center;
 }
@@ -232,7 +217,9 @@ body.entry-active .back-btn { opacity: 0.7; transform: rotate(0deg); }
     margin: 0 auto;
     transition: opacity 0.4s ease-out;
 }
-.entry-wrapper.is-hiding { opacity: 0; }
+.entry-wrapper.is-hiding {
+    opacity: 0;
+}
 
 .entry-wrapper > * {
     opacity: 0;
@@ -254,7 +241,10 @@ body.entry-active .back-btn { opacity: 0.7; transform: rotate(0deg); }
     text-align: justify;
     text-align-last: center;
 }
-.entry-content p em { font-style: italic; opacity: 0.7; }
+.entry-content p em {
+    font-style: italic;
+    opacity: 0.7;
+}
 
 .poem pre {
     font-family: var(--font-heading);
