@@ -1,11 +1,12 @@
 :root {
-    --bg-color: #F5F0E8; /* Soft linen cream */
-    --text-color: #2E332A; /* Deep forest green */
-    --primary-color: #DABF9A; /* Warm wood accent */
-    --card-bg-color: #FFFCF7;
-    --shadow-color: rgba(46, 51, 42, 0.1);
+    --bg-color: #2C2B29; /* Deep, dark wood */
+    --text-color: #EAE3D9; /* Warm parchment */
+    --accent-color: #E5A04F; /* Magical amber glow */
+    --card-bg-color: #383633; /* Slightly lighter wood */
+    --shadow-color: rgba(0, 0, 0, 0.4);
     --font-heading: 'Playfair Display', serif;
     --font-body: 'Montserrat', sans-serif;
+    --transition-speed: 0.8s;
 }
 
 * {
@@ -14,55 +15,29 @@
     padding: 0;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: var(--font-body);
     background-color: var(--bg-color);
     color: var(--text-color);
-    /* Start with overflow hidden, JS will change it */
     overflow: hidden; 
 }
 
-/* --- Animated Background --- */
-#particle-background {
+/* --- Background and Loader --- */
+.background-texture {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+    opacity: 0.05;
     z-index: -1;
-    background: var(--bg-color);
-    overflow: hidden;
 }
 
-@keyframes move-particles {
-    from { transform: translateY(0); }
-    to { transform: translateY(-100vh); }
-}
-
-#particle-background::after {
-    content: '';
-    position: absolute;
-    width: 3px;
-    height: 3px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    top: 100vh;
-    box-shadow: 
-        5vw 10vh 1px var(--primary-color), 10vw 80vh 1px var(--primary-color),
-        15vw 30vh 0px var(--primary-color), 20vw 90vh 1px var(--primary-color),
-        25vw 50vh 1px var(--primary-color), 30vw 10vh 0px var(--primary-color),
-        35vw 70vh 1px var(--primary-color), 40vw 40vh 1px var(--primary-color),
-        45vw 20vh 1px var(--primary-color), 50vw 60vh 1px var(--primary-color),
-        55vw 5vh 0px var(--primary-color), 60vw 95vh 1px var(--primary-color),
-        65vw 35vh 1px var(--primary-color), 70vw 75vh 1px var(--primary-color),
-        75vw 15vh 0px var(--primary-color), 80vw 85vh 1px var(--primary-color),
-        85vw 55vh 1px var(--primary-color), 90vw 25vh 1px var(--primary-color),
-        95vw 65vh 1px var(--primary-color), 100vw 5vh 1px var(--primary-color);
-    animation: move-particles 60s linear infinite;
-}
-
-
-/* --- Loader --- */
 .loader {
     position: fixed;
     top: 0;
@@ -70,39 +45,35 @@ body {
     width: 100%;
     height: 100%;
     background-color: var(--bg-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    place-items: center;
     z-index: 100;
-    /* --- THIS IS THE FIX --- */
-    /* We now transition opacity for 0.8s, and then after a 0.8s delay, instantly switch visibility */
-    transition: opacity 0.8s ease-in-out, visibility 0s linear 0.8s;
+    transition: opacity 0.5s ease-out 1.5s, visibility 0s linear 2s;
 }
 
-.loader-text {
-    font-family: var(--font-heading);
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-style: italic;
-    opacity: 0;
-    animation: fadeInOut 3s forwards;
+@keyframes pulse {
+    0%, 100% { transform: scale(0.8); box-shadow: 0 0 0 0 rgba(229, 160, 79, 0.7); }
+    50% { transform: scale(1); box-shadow: 0 0 20px 10px rgba(229, 160, 79, 0); }
 }
 
-@keyframes fadeInOut {
-    0%, 100% { opacity: 0; }
-    20%, 80% { opacity: 1; }
+.loader-icon {
+    width: 20px;
+    height: 20px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    animation: pulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
 }
 
 /* --- Main Content & Grid --- */
 .main-content {
     padding: 5vh 5vw;
     opacity: 0;
-    /* Animation starts after the loader text has finished its cycle */
-    animation: fadeInContent 1s forwards 3s;
+    animation: fadeInContent 1s forwards 2s;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; /* Ensures horizontal centering for the container itself */
+    align-items: center;
 }
 
 @keyframes fadeInContent {
@@ -116,56 +87,82 @@ body {
 
 .main-header h1 {
     font-family: var(--font-heading);
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+    font-style: italic;
     margin-bottom: 0.5rem;
     font-weight: 700;
 }
 
 .main-header p {
     font-size: clamp(1rem, 2vw, 1.2rem);
-    color: #7a6c5d;
+    color: var(--text-color);
+    opacity: 0.7;
 }
 
 .grid-container {
-    display: flex; /* This allows wrapping and centering */
+    display: flex;
     flex-wrap: wrap;
-    justify-content: center; /* This is the key to centering the boxes */
-    gap: 30px;
-    perspective: 1200px;
+    justify-content: center;
+    gap: 35px;
+    perspective: 1500px;
     width: 100%;
-    max-width: 1100px; /* Prevents the grid from becoming too wide on large screens */
+    max-width: 1200px;
 }
 
 .grid-item {
     background-color: var(--card-bg-color);
-    width: 300px;
+    width: 320px;
     aspect-ratio: 4 / 3;
     border-radius: 8px;
-    box-shadow: 0 4px 15px var(--shadow-color);
-    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 5px 20px var(--shadow-color);
+    border: 1px solid rgba(255,255,255,0.05);
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 25px;
     cursor: pointer;
-    transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.5s ease;
-    will-change: transform;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    transform-style: preserve-3d;
+    will-change: transform, box-shadow;
+}
+
+.grid-item::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150%;
+    padding-bottom: 150%;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .grid-item:hover {
-    transform: translateY(-12px) scale(1.05);
-    box-shadow: 0 15px 30px var(--shadow-color);
+    transform: translateY(-10px) rotateX(8deg) scale(1.03);
+    box-shadow: 0 20px 40px var(--shadow-color);
+}
+
+.grid-item:hover::before {
+    opacity: 0.1;
+    transform: translate(-50%, -50%) scale(1);
 }
 
 .grid-item h2 {
     font-family: var(--font-heading);
-    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
     text-align: center;
     color: var(--text-color);
     font-weight: 400;
+    transition: transform 0.5s ease;
+    transform: translateZ(50px); /* Give text 3D depth */
 }
 
-/* --- Entry Viewer --- */
+/* --- Entry Viewer ("Wooden Doors") --- */
 .entry-viewer {
     position: fixed;
     top: 0;
@@ -174,32 +171,28 @@ body {
     height: 100%;
     z-index: 200;
     visibility: hidden;
-    transform-style: preserve-3d;
-    transition: visibility 0s 0.8s;
 }
 
-.entry-viewer::before {
+.entry-viewer::before, .entry-viewer::after {
     content: '';
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    width: 50%;
     height: 100%;
-    background: var(--card-bg-color);
-    transform-origin: left center;
-    transform: rotateY(90deg);
-    transition: transform 0.8s cubic-bezier(0.7, 0, 0.2, 1);
+    background-color: var(--bg-color);
+    background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+    transition: transform var(--transition-speed) cubic-bezier(0.86, 0, 0.07, 1);
+    z-index: 210;
 }
 
-body.entry-active .entry-viewer {
-    visibility: visible;
-    transition-delay: 0s;
-}
+.entry-viewer::before { left: 0; }
+.entry-viewer::after { right: 0; }
 
-body.entry-active .entry-viewer::before {
-    transform: rotateY(0deg);
-}
+body.entry-active .entry-viewer { visibility: visible; }
+body.entry-active .entry-viewer::before { transform: translateX(-100%); }
+body.entry-active .entry-viewer::after { transform: translateX(100%); }
 
+/* --- Back Button --- */
 .back-btn {
     position: fixed;
     top: 25px;
@@ -212,20 +205,15 @@ body.entry-active .entry-viewer::before {
     cursor: pointer;
     color: var(--text-color);
     opacity: 0;
-    transform: rotate(45deg) scale(0.5);
-    transition: opacity 0.4s ease 0.6s, transform 0.4s ease 0.6s;
-    z-index: 210;
+    transform: rotate(45deg);
+    transition: opacity 0.5s ease var(--transition-speed), transform 0.5s ease var(--transition-speed);
+    z-index: 220;
 }
 
-body.entry-active .back-btn {
-    opacity: 0.7;
-    transform: rotate(0deg) scale(1);
-}
+body.entry-active .back-btn { opacity: 0.7; transform: rotate(0deg); }
+.back-btn:hover { opacity: 1; }
 
-.back-btn:hover {
-    opacity: 1;
-}
-
+/* --- Entry Content --- */
 .entry-content {
     display: none;
     position: absolute;
@@ -234,6 +222,7 @@ body.entry-active .back-btn {
     width: 100%;
     height: 100%;
     overflow-y: auto;
+    background-color: var(--card-bg-color);
     padding: 10vh 8vw;
     text-align: center;
 }
@@ -241,17 +230,14 @@ body.entry-active .back-btn {
 .entry-wrapper {
     max-width: 800px;
     margin: 0 auto;
+    transition: opacity 0.4s ease-out;
 }
+.entry-wrapper.is-hiding { opacity: 0; }
 
 .entry-wrapper > * {
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-.entry-content.active .entry-wrapper > * {
-    opacity: 1;
-    transform: translateY(0);
+    transform: translateY(25px);
+    transition: opacity 0.7s cubic-bezier(0.19, 1, 0.22, 1), transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .entry-title {
@@ -259,7 +245,6 @@ body.entry-active .back-btn {
     font-size: clamp(2.5rem, 6vw, 4rem);
     margin-bottom: 3rem;
     font-style: italic;
-    transition-delay: 0.5s !important;
 }
 
 .entry-content p {
@@ -267,13 +252,9 @@ body.entry-active .back-btn {
     line-height: 1.9;
     margin-bottom: 1.8rem;
     text-align: justify;
-    text-align-last: center; 
+    text-align-last: center;
 }
-
-.entry-content em {
-    font-style: italic;
-    color: #7a6c5d;
-}
+.entry-content p em { font-style: italic; opacity: 0.7; }
 
 .poem pre {
     font-family: var(--font-heading);
@@ -283,11 +264,11 @@ body.entry-active .back-btn {
     text-align: center;
 }
 
-.entry-drawing {
-    max-width: 100%;
+.entry-drawing, .video-container {
     border-radius: 8px;
-    margin-bottom: 2rem;
-    box-shadow: 0 10px 25px var(--shadow-color);
+    margin: 1rem auto 2rem;
+    box-shadow: 0 10px 30px var(--shadow-color);
+    max-width: 100%;
 }
 
 .video-container {
@@ -295,12 +276,8 @@ body.entry-active .back-btn {
     width: 100%;
     padding-bottom: 56.25%;
     height: 0;
-    margin-top: 3rem;
-    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 10px 25px var(--shadow-color);
 }
-
 .video-container iframe {
     position: absolute;
     top: 0;
