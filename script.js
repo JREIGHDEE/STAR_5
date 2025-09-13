@@ -6,11 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Page Load Animation ---
     window.addEventListener('load', () => {
+        // This timer now reliably triggers the CSS transitions to hide the loader
         setTimeout(() => {
             loader.style.opacity = '0';
-            loader.style.visibility = 'hidden';
-            body.style.overflow = 'auto';
-        }, 3000); // Must match the animation duration in CSS
+            loader.style.visibility = 'hidden'; // CSS handles the delay for this
+            body.style.overflow = 'auto'; // Restore scrolling
+        }, 3000); // Matches the loader text animation duration
     });
 
     // --- Grid Item Click Logic ---
