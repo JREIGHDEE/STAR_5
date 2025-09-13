@@ -30,7 +30,7 @@ body {
 .shooting-stars .shooting-star:nth-child(3) { top: 80%; right: -100px; animation-delay: 9s; animation-duration: 10s; }
 @keyframes shooting-star-animation { 0% { transform: translateX(0) translateY(0) rotate(20deg); opacity: 1; } 100% { transform: translateX(-150vw) translateY(150px) rotate(20deg); opacity: 0; } }
 
-/* --- Loader Logic (THE FIX) --- */
+/* --- Loader Logic --- */
 .loader {
     position: fixed;
     top: 0; left: 0;
@@ -39,13 +39,11 @@ body {
     display: grid;
     place-items: center;
     z-index: 100;
-    /* CSS handles the fade-out now */
     transition: opacity 0.8s ease-in-out, visibility 0s linear 0.8s;
 }
 .loader-text { font-family: var(--font-heading); font-size: clamp(2rem, 5vw, 3.5rem); font-style: italic; color: var(--text-color); opacity: 0; animation: fadeInOutStar 4s forwards; will-change: opacity, transform; }
 @keyframes fadeInOutStar { 0%, 100% { opacity: 0; } 20%, 60% { opacity: 1; transform: scale(1); } 90% { opacity: 0; transform: scale(0.1); } }
 
-/* When body gets the .is-loaded class, this rule will trigger */
 body.is-loaded .loader {
     opacity: 0;
     visibility: hidden;
@@ -60,13 +58,13 @@ body.is-loaded .loader {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* CSS handles the fade-in now */
-    transition: opacity 1.5s ease-in-out;
+    /* This transition now works without conflict */
+    transition: opacity 1.5s ease-in-out; 
 }
-/* When body gets the .is-loaded class, this rule will trigger */
+
+/* The conflicting 'animation' property was removed. This is now the only rule that makes the content visible. */
 body.is-loaded .main-content {
     opacity: 1;
-    /* Add a small delay so it happens after the loader starts fading */
     transition-delay: 0.5s; 
 }
 
